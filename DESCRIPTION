@@ -1,0 +1,13 @@
+Package: GWASbyCluster
+Type: Package
+Title: Identifying Significant SNPs in GWAS via Clustering
+Version: 0.1.5
+Date: 2019-10-02
+Author: Yan Xu, Li Xing, Jessica Su, XuekuiZhang<UBC.X.Zhang@gmail.com>, Weiliang Qiu <Weiliang.Qiu@gmail.com>
+Maintainer: Li Xing <sfulxing@gmail.com>
+Depends: R (>= 3.5.0), Biobase
+Imports: MASS, stats, snpStats, methods, iCheck, rootSolve
+Description: Identifying disease-associated significant SNPs using clustering approach.  This package is implementation of method proposed in Xu et al (2019) <DOI:10.1038/s41598-019-50229-6>.
+License: GPL (>= 2)
+NeedsCompilation: no
+Packaged: 2019-10-02 00:23:57 UTC; XuekuiZhang

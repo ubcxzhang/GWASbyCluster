@@ -1,0 +1,27 @@
+export(
+  estMemSNPs.oneSetHyperPara,
+  estMemSNPs,
+  simGenoFunc,
+  simGenoFuncDiffPriors
+)
+
+importFrom(stats,
+       integrate,
+       dbeta,
+       optim,
+       pbeta,
+       p.adjust,
+       rbeta,
+       var,
+       as.formula
+)
+
+importFrom("methods", "as")
+importFrom("rootSolve", "multiroot")
+importFrom("snpStats", "p.value")
+importFrom("iCheck", "genExprSet")
+importFrom("iCheck", "lmFitWrapper")
+
+import(Biobase)
+
+
