@@ -1,7 +1,7 @@
 Package: GWASbyCluster
 Type: Package
 Title: Identifying Significant SNPs in Genome Wide Association Studies (GWAS) via Clustering
-Version: 0.1.5
+Version: 0.1.6
 Date: 2019-10-02
 Author: Yan Xu, Li Xing, Jessica Su, Xuekui Zhang<UBC.X.Zhang@gmail.com>, Weiliang Qiu <Weiliang.Qiu@gmail.com>
 Maintainer: Li Xing <sfulxing@gmail.com>
