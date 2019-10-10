@@ -7,6 +7,7 @@ Xu Yan, Li Xing, Jessica Su, Xuekui Zhang, and Weiliang Qiu. "Model-based cluste
 
 Please cite this paper, if you used this R package in your research. Thanks!
 
-To install this R package, please install from CRAN submission or use the following commands in R<br>
-library(devtools)<br>
-install_github("ubcxzhang/GWASbyCluster")
+To install this R package, please install from CRAN submission or use the following R code
+
+    library(devtools)
+    install_github("ubcxzhang/GWASbyCluster")
