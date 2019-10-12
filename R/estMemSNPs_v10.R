@@ -1,3 +1,6 @@
+# v12 created on Oct. 9, 2019
+#  (1) directly use limma instead of iCheck::lmFitWrapper
+#
 # v11 created on Sept. 28, 2019
 #  (1) add input parameter 'method' to decide how to determine
 #      SNP clusters based on responsibility matrix
@@ -307,33 +310,57 @@ estMemSNPs.oneSetHyperPara=function(
 
   # get initial 3-cluster partition
   fDat=fData(es)
-  nr=nrow(es)
-  fDat$probe=paste("probe", 1:nr, sep="")
-  fDat$gene=paste("gene", 1:nr, sep="")
-  fDat$chr=rep(1, nr)
-  rownames(fDat)=featureNames(es)
-  es2=es
-  fData(es2)=fDat
+  #nr=nrow(es)
+  #fDat$probe=paste("probe", 1:nr, sep="")
+  #fDat$gene=paste("gene", 1:nr, sep="")
+  #fDat$chr=rep(1, nr)
+  #rownames(fDat)=featureNames(es)
+  #es2=es
+  #fData(es2)=fDat
+  pDat=pData(es)
+  genoMat=exprs(es)
 
   fmla=as.formula(paste("~", var.memSubjs, sep=""))
-  res.limma=iCheck::lmFitWrapper(
-    es=es2,
-    formula=fmla,
-    pvalAdjMethod=pvalAdjMethod,
-    probeID.var="probe",
-    gene.var="gene",
-    chr.var="chr",
-    verbose=FALSE)
+  design=model.matrix(fmla, data=pDat)
 
-  tt.memGenes.ini=res.limma$memGenes
-  memGenes.ini=rep(NA, length(tt.memGenes.ini))
-  memGenes.ini[which(tt.memGenes.ini==1)]="+"
-  memGenes.ini[which(tt.memGenes.ini==2)]="EE"
-  memGenes.ini[which(tt.memGenes.ini==3)]="-"
+  fit = lmFit(genoMat, design)
+  ebFit = eBayes(fit)
+  pval = ebFit$p.value[, 2]
+  p.adj = p.adjust(pval, method=pvalAdjMethod)
 
-  res.limma$memGenes.ini=memGenes.ini
+  stats = ebFit$t[, 2]
+  nSNPs=length(stats)
+  memGenes.ini=rep("EE", nSNPs)
+  memGenes.ini[which(stats>0 & p.adj < 0.05)] = "+" 
+  memGenes.ini[which(stats<0 & p.adj < 0.05)] = "-" 
 
-  genoMat=exprs(es)
+  memGenes2=rep(1, nSNPs)
+  memGenes2[which(memGenes.ini == "EE")]=0
+
+  frame.unsorted=data.frame(stats=stats, pval=pval, p.adj=p.adj)
+
+  res.limma=list(ebFit=ebFit, frame.unsorted=frame.unsorted,
+    memGenes.ini=memGenes.ini, memGenes2=memGenes2)
+
+#  res.limma=iCheck::lmFitWrapper(
+#    es=es2,
+#    formula=fmla,
+#    pvalAdjMethod=pvalAdjMethod,
+#    probeID.var="probe",
+#    gene.var="gene",
+#    chr.var="chr",
+#    verbose=FALSE)
+#
+#  tt.memGenes.ini=res.limma$memGenes
+#  memGenes.ini=rep(NA, length(tt.memGenes.ini))
+#  memGenes.ini[which(tt.memGenes.ini==1)]="+"
+#  memGenes.ini[which(tt.memGenes.ini==2)]="EE"
+#  memGenes.ini[which(tt.memGenes.ini==3)]="-"
+#
+
+  #res.limma$memGenes.ini=memGenes.ini
+
+  #genoMat=exprs(es)
   # parameter estimates based on snp-wise test
   nSNPs2=nrow(genoMat)
   theta.hat=rep(NA, nSNPs2)
@@ -472,31 +499,59 @@ estMemSNPs=function(
 
   # get initial 3-cluster partition
   fDat=fData(es)
-  nr=nrow(es)
-  fDat$probe=paste("probe", 1:nr, sep="")
-  fDat$gene=paste("gene", 1:nr, sep="")
-  fDat$chr=rep(1, nr)
-  rownames(fDat)=featureNames(es)
-  es2=es
-  fData(es2)=fDat
+#  nr=nrow(es)
+#  fDat$probe=paste("probe", 1:nr, sep="")
+#  fDat$gene=paste("gene", 1:nr, sep="")
+#  fDat$chr=rep(1, nr)
+#  rownames(fDat)=featureNames(es)
+#  es2=es
+#  fData(es2)=fDat
+#
+
+  pDat=pData(es)
+  genoMat=exprs(es)
 
   fmla=as.formula(paste("~", var.memSubjs, sep=""))
-  res.limma=iCheck::lmFitWrapper(
-    es=es2,
-    formula=fmla,
-    pvalAdjMethod=pvalAdjMethod,
-    probeID.var="probe",
-    gene.var="gene",
-    chr.var="chr",
-    verbose=FALSE)
+  design=model.matrix(fmla, data=pDat)
 
-  tt.memGenes.ini=res.limma$memGenes
-  memGenes.ini=rep(NA, length(tt.memGenes.ini))
-  memGenes.ini[which(tt.memGenes.ini==1)]="+"
-  memGenes.ini[which(tt.memGenes.ini==2)]="EE"
-  memGenes.ini[which(tt.memGenes.ini==3)]="-"
+  fit = lmFit(genoMat, design)
+  ebFit = eBayes(fit)
+  pval = ebFit$p.value[, 2]
+  p.adj = p.adjust(pval, method=pvalAdjMethod)
 
-  res.limma$memGenes.ini=memGenes.ini
+  stats = ebFit$t[, 2]
+  nSNPs=length(stats)
+  memGenes.ini=rep("EE", nSNPs)
+  memGenes.ini[which(stats>0 & p.adj < 0.05)] = "+" 
+  memGenes.ini[which(stats<0 & p.adj < 0.05)] = "-" 
+
+  memGenes2=rep(1, nSNPs)
+  memGenes2[which(memGenes.ini == "EE")]=0
+
+  frame.unsorted=data.frame(stats=stats, pval=pval, p.adj=p.adj)
+
+  res.limma=list(ebFit=ebFit, frame.unsorted=frame.unsorted,
+    memGenes.ini=memGenes.ini, memGenes2=memGenes2)
+
+#
+#
+#  fmla=as.formula(paste("~", var.memSubjs, sep=""))
+#  res.limma=iCheck::lmFitWrapper(
+#    es=es2,
+#    formula=fmla,
+#    pvalAdjMethod=pvalAdjMethod,
+#    probeID.var="probe",
+#    gene.var="gene",
+#    chr.var="chr",
+#    verbose=FALSE)
+#
+#  tt.memGenes.ini=res.limma$memGenes
+#  memGenes.ini=rep(NA, length(tt.memGenes.ini))
+#  memGenes.ini[which(tt.memGenes.ini==1)]="+"
+#  memGenes.ini[which(tt.memGenes.ini==2)]="EE"
+#  memGenes.ini[which(tt.memGenes.ini==3)]="-"
+#
+#  res.limma$memGenes.ini=memGenes.ini
   memSNPs2.snpTest=res.limma$memGenes2
  
   genoMat=exprs(es)

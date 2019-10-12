@@ -157,12 +157,14 @@ Weiliang Qiu <Weiliang.Qiu@gmail.com>
 
 data(esSimDiffPriors)
 print(esSimDiffPriors)
-fDat = fData(esSimDiffPriors)
+
+es=esSimDiffPriors[1:500,]
+fDat = fData(es)
 print(fDat[1:2,])
 print(table(fDat$memGenes))
 
 res = estMemSNPs(
-  es = esSimDiffPriors, 
+  es = es, 
   var.memSubjs = "memSubjs")
 
 print(table(fDat$memGenes, res$memSNPs))

@@ -164,7 +164,7 @@ set.seed(2)
 esSim = simGenoFunc(
   nCases = 100,
   nControls = 100,
-  nSNPs = 1000,
+  nSNPs = 500,
   alpha.p = 2, beta.p = 5, pi.p = 0.1,
   alpha0 = 2, beta0 = 5, pi0 = 0.8,
   alpha.n = 2, beta.n = 5, pi.n = 0.1,

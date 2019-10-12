@@ -8,6 +8,7 @@ export(
 importFrom(stats,
        integrate,
        dbeta,
+       model.matrix,
        optim,
        pbeta,
        p.adjust,
@@ -17,10 +18,11 @@ importFrom(stats,
 )
 
 importFrom("methods", "as")
+importFrom("methods", "new")
 importFrom("rootSolve", "multiroot")
 importFrom("snpStats", "p.value")
-importFrom("iCheck", "genExprSet")
-importFrom("iCheck", "lmFitWrapper")
+
+importFrom("limma", "lmFit", "eBayes")
 
 import(Biobase)
 

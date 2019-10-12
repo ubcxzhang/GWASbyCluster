@@ -184,7 +184,7 @@ set.seed(2)
 esSimDiffPriors = simGenoFuncDiffPriors(
   nCases = 100,
   nControls = 100,
-  nSNPs = 1000,
+  nSNPs = 500,
   alpha.p.ca = 2, beta.p.ca = 3,
   alpha.p.co = 2, beta.p.co = 8, pi.p = 0.1,
   alpha0 = 2, beta0 = 5, pi0 = 0.8,
